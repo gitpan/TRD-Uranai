@@ -11,11 +11,11 @@ TRD::Uranai - Today's Uranai Count down.
 
 =head1 VERSION
 
-Version 0.0.1
+Version 0.0.2
 
 =cut
 
-our $VERSION = '0.0.1';
+our $VERSION = '0.0.2';
 
 
 =head1 SYNOPSIS
@@ -41,6 +41,7 @@ if you don't export anything, such as for a purely object-oriented module.
     get today's uranai count down data.
 
 data
+    'count' => 12,
     'month' => '08',
     'day' => '01',
     'ranking' => [
@@ -74,6 +75,7 @@ sub get {
 sub dump {
 	my $uranai = shift;
 
+	print "count=". $uranai->{'count'}. "\n";
 	print "month=". $uranai->{'month'}. "\n";
 	print "day=". $uranai->{'day'}. "\n";
 	foreach my $ranking ( @{$uranai->{'ranking'}} ){
@@ -96,6 +98,7 @@ sub parseContents {
 	my $contents = shift;
 	my $encode = shift;
 	my $uranai;
+	my $cnt = 0;
 
 	if( $contents=~m#class="day">(\d+)·î(\d+)Æü</td># ){
 		$uranai->{'month'} = $1;
@@ -132,7 +135,11 @@ sub parseContents {
 		}
 
 		push( @{$uranai->{'ranking'}}, $item );
+
+		$cnt += 1;
 	}
+
+	$uranai->{'count'} = $cnt;
 
 	$uranai;
 }
